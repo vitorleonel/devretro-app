@@ -2,7 +2,9 @@
   <div class="flex-1 p-4">
     <div class="mb-4 flex justify-between items-center">
       <h2 class="font-semibold">{{ name }}</h2>
-      <i class="far fa-trash-alt text-gray-500 hover:text-red-500 cursor-pointer"></i>
+      <i
+        class="far fa-trash-alt text-gray-500 hover:text-red-500 cursor-pointer"
+      ></i>
     </div>
 
     <div
@@ -27,12 +29,18 @@
           placeholder="Enter your text..."
         ></textarea>
 
-        <div class="w-10 bg-blue-500 cursor-pointer flex justify-center items-center">
+        <div
+          class="w-10 bg-blue-500 cursor-pointer flex justify-center items-center"
+        >
           <i class="fas fa-check text-white"></i>
         </div>
       </li>
 
-      <li v-for="item in items" :key="item.id" class="p-4 bg-blue-500 text-white mb-4">
+      <li
+        v-for="item in items"
+        :key="item.id"
+        class="p-4 bg-blue-500 text-white mb-4"
+      >
         {{ item.description }}
       </li>
     </ul>
@@ -40,10 +48,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'BoardColumn',
+  name: "BoardColumn",
 
   props: {
     name: {
@@ -59,19 +67,19 @@ export default Vue.extend({
   data() {
     return {
       textarea: {
-        description: '',
+        description: "",
         opened: false,
       },
     };
   },
 
   watch: {
-    'textarea.opened': function() {
+    "textarea.opened": function () {
       if (this.textarea.opened) {
         return;
       }
 
-      this.textarea.description = '';
+      this.textarea.description = "";
     },
   },
 });
