@@ -1,16 +1,13 @@
 export default {
   state: {
     loading: true,
-
-    name: null,
-    columns: [],
+    data: null,
   },
 
   mutations: {
-    setBoard(state, { name, columns }) {
-      state.name = name;
-      state.columns = columns;
+    setBoard(state, board) {
       state.loading = false;
+      state.data = board;
     },
   },
 };

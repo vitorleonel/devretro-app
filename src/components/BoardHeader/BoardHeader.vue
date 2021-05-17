@@ -5,7 +5,7 @@
     <div class="text-xl">Dev<span class="font-bold">Retro</span></div>
 
     <h1 class="w-full text-lg text-center absolute -ml-6">
-      {{ !loading ? name : "Loading..." }}
+      {{ !loading ? board.name : "Loading..." }}
     </h1>
 
     <div class="w-8 h-8 bg-gray-300 rounded-full">
@@ -26,7 +26,7 @@ export default Vue.extend({
   computed: {
     ...mapState({
       loading: (state) => state.board.loading,
-      name: (state) => state.board.name,
+      board: (state) => state.board.data,
     }),
   },
 });

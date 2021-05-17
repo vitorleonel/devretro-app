@@ -22,7 +22,7 @@ export default Vue.extend({
 
   computed: {
     ...mapState({
-      columns: (state) => state.board.columns,
+      columns: (state) => state.board.data?.columns || [],
     }),
   },
 });

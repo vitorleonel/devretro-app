@@ -21,7 +21,9 @@ export default Vue.extend({
   created() {
     const { id: boardId } = this.$route.params;
 
-    this.$socket = SocketIOClient(`http://localhost:3000/boards-${boardId}`);
+    this.$socket = SocketIOClient(`http://localhost:3000/boards-${boardId}`, {
+      query: `boardId=${boardId}`,
+    });
   },
 
   mounted() {
