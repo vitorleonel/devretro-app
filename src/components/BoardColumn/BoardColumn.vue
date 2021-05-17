@@ -22,7 +22,7 @@
     </div>
 
     <ul class="mt-4">
-      <li v-if="textarea.opened" class="p-1 bg-blue-500 mb-4 flex flex-row">
+      <li v-if="textarea.opened" class="p-1 bg-gray-700 mb-4 flex flex-row">
         <textarea
           v-model="textarea.description"
           class="flex-1 h-12 p-3 resize-none outline-none block"
@@ -30,7 +30,7 @@
         ></textarea>
 
         <div
-          class="w-10 bg-blue-500 cursor-pointer flex justify-center items-center"
+          class="w-10 bg-gray-700 cursor-pointer flex justify-center items-center"
         >
           <i class="fas fa-check text-white"></i>
         </div>
@@ -38,8 +38,8 @@
 
       <li
         v-for="item in items"
-        :key="item.id"
-        class="p-4 bg-blue-500 text-white mb-4"
+        :key="item._id"
+        class="p-4 bg-gray-700 text-white mb-4"
       >
         {{ item.description }}
       </li>

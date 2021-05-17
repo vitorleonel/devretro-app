@@ -4,7 +4,7 @@
       v-for="column in columns"
       :name="column.name"
       :items="column.items"
-      :key="column.id"
+      :key="column._id"
     />
   </main>
 </template>
