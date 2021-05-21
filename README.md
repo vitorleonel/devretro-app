@@ -1,4 +1,4 @@
-# devretro-app
+# DevRetro - APP
 
 ## Project setup
 ```
