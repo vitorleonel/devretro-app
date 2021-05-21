@@ -8,12 +8,10 @@
       {{ !loading ? board.name : "Loading..." }}
     </h1>
 
-    <div class="w-8 h-8 bg-gray-300 rounded-full">
-      <img
-        src="https://media-exp1.licdn.com/dms/image/C4D03AQH4P8V0_z5RVg/profile-displayphoto-shrink_400_400/0/1559000494131?e=1625702400&v=beta&t=szp3RcR-4plRgE-4FH34Z6yWx9GR4LlxtNaL3tp0SyI"
-        alt="Vitor Leonel"
-        class="rounded-full"
-      />
+    <div
+      class="w-8 h-8 bg-green-300 rounded-full flex justify-center items-center"
+    >
+      <span class="font-semibold">D</span>
     </div>
   </header>
 </template>
