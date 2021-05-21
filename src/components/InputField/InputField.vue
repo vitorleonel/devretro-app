@@ -6,7 +6,7 @@
 
     <input
       v-bind="$attrs"
-      v-bind:value="value"
+      :value="value"
       v-on:input="$emit('input', $event.target.value)"
       class="w-full h-10 px-3 outline-none border hover:border-gray-300"
     />
@@ -17,6 +17,6 @@
 export default {
   name: "InputField",
 
-  props: ["label", "value"],
+  props: ["label", "name", "value"],
 };
 </script>
