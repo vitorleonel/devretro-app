@@ -23,7 +23,7 @@ export default {
     const { id: boardId } = this.$route.params;
 
     Vue.prototype.$socket = SocketIOClient(
-      `http://localhost:3000/boards-${boardId}`,
+      `${process.env.VUE_APP_SOCKET_URL}/boards-${boardId}`,
       {
         query: `boardId=${boardId}`,
       }
