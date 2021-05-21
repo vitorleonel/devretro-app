@@ -17,7 +17,7 @@ export default {
   },
 
   mounted() {
-    this.$socket.on("connection", (board) => this.setBoard(board));
+    this.$socket.on("current-board", (board) => this.setBoard(board));
   },
 
   methods: {

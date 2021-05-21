@@ -8,32 +8,38 @@
     </div>
 
     <div
-      @click="textarea.opened = !textarea.opened"
+      @click="openedForm = !openedForm"
       class="group bg-gray-200 hover:bg-gray-400 cursor-pointer text-center p-1"
     >
       <i
-        v-if="!textarea.opened"
+        v-if="!openedForm"
         class="far fa-plus-square text-gray-500 group-hover:text-gray-700"
       ></i>
       <i
-        v-if="textarea.opened"
+        v-if="openedForm"
         class="far fa-minus-square text-gray-500 group-hover:text-gray-700"
       ></i>
     </div>
 
     <ul class="mt-4">
-      <li v-if="textarea.opened" class="p-1 bg-gray-700 mb-4 flex flex-row">
-        <textarea
-          v-model="textarea.description"
-          class="flex-1 h-12 p-3 resize-none outline-none block"
-          placeholder="Enter your text..."
-        ></textarea>
+      <li v-if="openedForm" class="p-1 bg-gray-700 mb-4">
+        <form method="post" class="flex flex-row" @submit.prevent="addCard">
+          <textarea
+            v-model="newCard"
+            class="flex-1 h-12 p-3 resize-none outline-none block"
+            placeholder="Enter your text..."
+            autofocus
+            :disabled="loading"
+          ></textarea>
 
-        <div
-          class="w-10 bg-gray-700 cursor-pointer flex justify-center items-center"
-        >
-          <i class="fas fa-check text-white"></i>
-        </div>
+          <button
+            class="w-10 bg-gray-700 focus:outline-none cursor-pointer flex justify-center items-center"
+            :disabled="loading"
+          >
+            <i v-if="!loading" class="fas fa-check text-white"></i>
+            <i v-if="loading" class="fas fa-spinner fa-spin text-white"></i>
+          </button>
+        </form>
       </li>
 
       <li
@@ -58,6 +64,10 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    columnId: {
+      type: String,
+      required: true,
+    },
     items: {
       type: Array,
       required: true,
@@ -66,20 +76,51 @@ export default Vue.extend({
 
   data() {
     return {
-      textarea: {
-        description: "",
-        opened: false,
-      },
+      loading: false,
+      openedForm: false,
+      newCard: "",
     };
   },
 
-  watch: {
-    "textarea.opened": function () {
-      if (this.textarea.opened) {
+  mounted() {
+    this.$socket.on("cards-add", ({ error }) => {
+      if (error) {
+        this.loading = false;
+      } else {
+        this.openedForm = false;
+      }
+    });
+  },
+
+  methods: {
+    async addCard() {
+      const newCard = this.newCard.trim();
+
+      if (!newCard) {
         return;
       }
 
-      this.textarea.description = "";
+      this.loading = true;
+
+      try {
+        this.$socket.emit("cards-add", {
+          columnId: this.columnId,
+          description: newCard,
+        });
+      } catch (error) {
+        this.loading = false;
+      }
+    },
+  },
+
+  watch: {
+    openedForm: function () {
+      if (this.openedForm) {
+        return;
+      }
+
+      this.newCard = "";
+      this.loading = false;
     },
   },
 });
