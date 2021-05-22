@@ -2,9 +2,6 @@
   <div class="flex-1 p-4">
     <div class="mb-4 flex justify-between items-center">
       <h2 class="font-semibold">{{ name }}</h2>
-      <i
-        class="far fa-trash-alt text-gray-500 hover:text-red-500 cursor-pointer"
-      ></i>
     </div>
 
     <div
@@ -45,9 +42,14 @@
       <li
         v-for="item in items"
         :key="item._id"
-        class="p-4 bg-gray-700 text-white mb-4"
+        class="p-4 bg-gray-700 text-white mb-4 relative"
       >
-        {{ item.description }}
+        <p class="w-full pr-8">{{ item.description }}</p>
+
+        <i
+          class="far fa-trash-alt text-gray-300 hover:text-red-500 cursor-pointer absolute right-4 top-5"
+          @click="removeCard(item._id)"
+        ></i>
       </li>
     </ul>
   </div>
@@ -84,16 +86,16 @@ export default Vue.extend({
 
   mounted() {
     this.$socket.on("cards-add", ({ error }) => {
-      if (error) {
-        this.loading = false;
-      } else {
-        this.openedForm = false;
+      this.loading = false;
+
+      if (!error) {
+        this.newCard = "";
       }
     });
   },
 
   methods: {
-    async addCard() {
+    addCard() {
       const newCard = this.newCard.trim();
 
       if (!newCard) {
@@ -110,6 +112,13 @@ export default Vue.extend({
       } catch (error) {
         this.loading = false;
       }
+    },
+
+    removeCard(cardId) {
+      this.$socket.emit("cards-remove", {
+        columnId: this.columnId,
+        cardId,
+      });
     },
   },
 
