@@ -33,7 +33,7 @@ export default Vue.extend({
         return;
       }
 
-      const boardExpiredIn = dayjs(this.board.createdAt).add(1, "day");
+      const boardExpiredIn = dayjs(this.board.createdAt).add(2, "day");
       const current = dayjs();
 
       return current.to(boardExpiredIn);

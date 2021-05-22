@@ -6,9 +6,10 @@
       @submit.prevent="submitForm"
     >
       <InputField
-        label="Board name:"
+        label="Your board name:"
         name="boardName"
         placeholder="Your board name"
+        autofocus
         v-model="boardName"
         :disabled="loading"
       />
@@ -23,6 +24,13 @@
         >{{ !loading ? "Create board" : "Creating board..." }}</Button
       >
     </form>
+
+    <div class="w-full max-w-sm mx-auto mt-6 pt-6 border-t">
+      <p class="text-gray-500">
+        All boards expire 48 hours after their creation. We will review this in
+        the future.
+      </p>
+    </div>
   </GuestLayout>
 </template>
 
