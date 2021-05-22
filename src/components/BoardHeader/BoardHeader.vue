@@ -8,7 +8,7 @@
       {{ !loading ? board.name : "Loading..." }}
     </h1>
 
-    <div>Expires {{ expireIn }}</div>
+    <div v-show="expireIn">Expires {{ expireIn }}</div>
   </header>
 </template>
 
