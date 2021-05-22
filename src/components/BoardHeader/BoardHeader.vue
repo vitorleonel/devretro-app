@@ -8,11 +8,7 @@
       {{ !loading ? board.name : "Loading..." }}
     </h1>
 
-    <div
-      class="w-8 h-8 bg-green-300 rounded-full flex justify-center items-center"
-    >
-      <span class="font-semibold">D</span>
-    </div>
+    <div>Expires {{ expireIn }}</div>
   </header>
 </template>
 
@@ -20,12 +16,28 @@
 import Vue from "vue";
 import { mapState } from "vuex";
 
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
+
 export default Vue.extend({
   computed: {
     ...mapState({
       loading: (state) => state.board.loading,
       board: (state) => state.board.data,
     }),
+
+    expireIn() {
+      if (!this.board) {
+        return;
+      }
+
+      const boardExpiredIn = dayjs(this.board.createdAt).add(1, "day");
+      const current = dayjs();
+
+      return current.to(boardExpiredIn);
+    },
   },
 });
 </script>
