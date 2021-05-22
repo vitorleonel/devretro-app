@@ -2,7 +2,7 @@
   <GuestLayout class="justify-center">
     <form
       method="post"
-      class="w-full max-w-sm mx-auto"
+      class="w-full max-w-sm mx-auto p-4"
       @submit.prevent="submitForm"
     >
       <InputField
@@ -25,8 +25,8 @@
       >
     </form>
 
-    <div class="w-full max-w-sm mx-auto mt-6 pt-6 border-t">
-      <p class="text-gray-500">
+    <div class="w-full max-w-sm mx-auto p-4">
+      <p class="text-gray-500 pt-8 border-t">
         All boards expire 48 hours after their creation. We will review this in
         the future.
       </p>
@@ -60,11 +60,11 @@ export default {
     async submitForm() {
       const boardName = this.boardName.trim();
 
-      if (!boardName) {
+      if (!boardName || this.loading) {
         return;
       }
 
-      this.loading = false;
+      this.loading = true;
 
       try {
         const {
