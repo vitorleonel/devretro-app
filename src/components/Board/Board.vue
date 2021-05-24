@@ -1,12 +1,6 @@
 <template>
   <main class="flex-1 p-2 overflow-y-auto flex justify-start items-start">
-    <BoardColumn
-      v-for="column in columns"
-      :columnId="column._id"
-      :name="column.name"
-      :items="column.items"
-      :key="column._id"
-    />
+    <BoardColumn v-for="column in columns" :column="column" :key="column._id" />
   </main>
 </template>
 

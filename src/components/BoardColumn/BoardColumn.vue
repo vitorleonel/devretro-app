@@ -1,7 +1,7 @@
 <template>
   <div class="flex-1 p-4">
     <div class="mb-4 flex justify-between items-center">
-      <h2 class="font-semibold">{{ name }}</h2>
+      <h2 class="font-semibold">{{ column.name }}</h2>
     </div>
 
     <div
@@ -19,7 +19,7 @@
     </div>
 
     <ul class="mt-4">
-      <li v-if="openedForm" class="p-1 bg-gray-700 mb-4">
+      <li v-if="openedForm" class="p-1 bg-gray-700 mb-4" :class="boardColor">
         <form method="post" class="flex flex-row" @submit.prevent="addCard">
           <textarea
             v-model="newCard"
@@ -30,7 +30,8 @@
           ></textarea>
 
           <button
-            class="w-10 bg-gray-700 focus:outline-none cursor-pointer flex justify-center items-center"
+            class="w-10 focus:outline-none cursor-pointer flex justify-center items-center"
+            :class="boardColor"
             :disabled="loading"
           >
             <i v-if="!loading" class="fas fa-check text-white"></i>
@@ -40,14 +41,15 @@
       </li>
 
       <li
-        v-for="item in items"
+        v-for="item in column.items"
         :key="item._id"
-        class="p-4 bg-gray-700 text-white mb-4 relative"
+        class="p-4 text-white mb-4 relative"
+        :class="boardColor"
       >
         <p class="w-full pr-8">{{ item.description }}</p>
 
         <i
-          class="far fa-trash-alt text-gray-300 hover:text-red-500 cursor-pointer absolute right-4 top-5"
+          class="far fa-trash-alt text-white opacity-75 hover:opacity-100 cursor-pointer absolute right-4 top-5"
           @click="removeCard(item._id)"
         ></i>
       </li>
@@ -62,16 +64,8 @@ export default Vue.extend({
   name: "BoardColumn",
 
   props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    columnId: {
-      type: String,
-      required: true,
-    },
-    items: {
-      type: Array,
+    column: {
+      type: Object,
       required: true,
     },
   },
@@ -82,6 +76,18 @@ export default Vue.extend({
       openedForm: false,
       newCard: "",
     };
+  },
+
+  computed: {
+    boardColor() {
+      const options = {
+        green: "bg-green-500",
+        blue: "bg-blue-500",
+        red: "bg-red-500",
+      };
+
+      return options[this.column.color] || "bg-gray-700";
+    },
   },
 
   mounted() {
@@ -106,7 +112,7 @@ export default Vue.extend({
 
       try {
         this.$socket.emit("cards-add", {
-          columnId: this.columnId,
+          columnId: this.column._id,
           description: newCard,
         });
       } catch (error) {
@@ -116,7 +122,7 @@ export default Vue.extend({
 
     removeCard(cardId) {
       this.$socket.emit("cards-remove", {
-        columnId: this.columnId,
+        columnId: this.column._id,
         cardId,
       });
     },
