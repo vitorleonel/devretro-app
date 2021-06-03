@@ -27,7 +27,7 @@
 
     <div class="w-full max-w-sm mx-auto p-4">
       <p class="text-gray-500 pt-8 border-t">
-        All boards expire 48 hours after their creation. We will review this in
+        All boards expire 30 days after their creation. We will review this in
         the future.
       </p>
     </div>
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import GuestLayout from "@/layouts/GuestLayout";
 
 import InputField from "@/components/InputField";
@@ -56,6 +58,12 @@ export default {
     };
   },
 
+  computed: {
+    ...mapState({
+      user: (state) => state.auth.data,
+    }),
+  },
+
   methods: {
     async submitForm() {
       const boardName = this.boardName.trim();
@@ -70,10 +78,14 @@ export default {
         const {
           data: { board },
         } = await HttpService.post("/boards", {
+          userId: this.user.id,
           name: boardName,
         });
 
-        this.$router.push({ name: "Board", params: { id: board._id } });
+        this.$router.push({
+          name: "Board",
+          params: { id: board._id },
+        });
       } catch (error) {
         this.loading = false;
       }

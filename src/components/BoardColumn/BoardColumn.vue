@@ -51,16 +51,17 @@
         <i
           class="far fa-trash-alt text-white opacity-75 hover:opacity-100 cursor-pointer absolute right-4 top-5"
           @click="removeCard(item._id)"
+          v-if="item.userId === user.id"
         ></i>
       </li>
     </ul>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
+<script>
+import { mapState } from "vuex";
 
-export default Vue.extend({
+export default {
   name: "BoardColumn",
 
   props: {
@@ -79,6 +80,10 @@ export default Vue.extend({
   },
 
   computed: {
+    ...mapState({
+      user: (state) => state.auth.data,
+    }),
+
     boardColor() {
       const options = {
         green: "bg-green-500",
@@ -91,12 +96,8 @@ export default Vue.extend({
   },
 
   mounted() {
-    this.$socket.on("cards-add", ({ error }) => {
+    this.$socket.on("cards-add", () => {
       this.loading = false;
-
-      if (!error) {
-        this.newCard = "";
-      }
     });
   },
 
@@ -110,19 +111,17 @@ export default Vue.extend({
 
       this.loading = true;
 
-      try {
-        this.$socket.emit("cards-add", {
-          columnId: this.column._id,
-          description: newCard,
-        });
-      } catch (error) {
-        this.loading = false;
-      }
+      this.$socket.emit("cards-add", {
+        columnId: this.column._id,
+        userId: this.user.id,
+        description: newCard,
+      });
     },
 
     removeCard(cardId) {
       this.$socket.emit("cards-remove", {
         columnId: this.column._id,
+        userId: this.user.id,
         cardId,
       });
     },
@@ -138,5 +137,5 @@ export default Vue.extend({
       this.loading = false;
     },
   },
-});
+};
 </script>
